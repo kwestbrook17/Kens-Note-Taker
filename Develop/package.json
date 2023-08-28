@@ -1,14 +1,16 @@
 {
-  "name": "note-taker",
+  "name": "kens-note-taker",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "description": "## Your Task",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security"
   }
 }
