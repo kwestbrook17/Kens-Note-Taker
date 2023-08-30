@@ -3,6 +3,13 @@ let noteText;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
+let jsonNotes = fetch('/db.json', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
 
 if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
@@ -69,13 +76,13 @@ const renderActiveNote = () => {
 const handleNoteSave = () => {
   const newNote = {
     title: noteTitle.value,
-    text: noteText.value,
+    text: noteText.value
   };
-  saveNote(newNote).then(() => {
-    getAndRenderNotes();
-    renderActiveNote();
-  });
+  saveNote(newNote)
+    .then(() => getAndRenderNotes())
+    .catch(error => console.error('Error saving note:', error));
 };
+
 
 // Delete the clicked note
 const handleNoteDelete = (e) => {
@@ -97,16 +104,21 @@ const handleNoteDelete = (e) => {
 
 // Sets the activeNote and displays it
 const handleNoteView = (e) => {
-  e.preventDefault();
-  activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
+  console.log(e);
+  const jsonNotes = JSON.parse(e.target.parentElement.dataset.note);
+  console.log(jsonNotes)
+  const noteId = e.target.parentElement.dataset.note.id;
+  activeNote = jsonNotes;
   renderActiveNote();
 };
 
+
 // Sets the activeNote to and empty object and allows the user to enter a new note
-const handleNewNoteView = (e) => {
+const handleNewNoteView = () => {
   activeNote = {};
   renderActiveNote();
 };
+
 
 const handleRenderSaveBtn = () => {
   if (!noteTitle.value.trim() || !noteText.value.trim()) {
@@ -171,7 +183,8 @@ const renderNoteList = async (notes) => {
 };
 
 // Gets notes from the db and renders them to the sidebar
-const getAndRenderNotes = () => getNotes().then(renderNoteList);
+const getAndRenderNotes = () => {getNotes().then(notes => renderNoteList(notes)).catch(error => console.error('Error fetching notes:', error));
+};
 
 if (window.location.pathname === '/notes') {
   saveNoteBtn.addEventListener('click', handleNoteSave);

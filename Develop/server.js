@@ -12,7 +12,7 @@ app.use(express.static('public'));
 
 
 app.get('/api/notes', (req, res) => {
-  fs.readFile('db.json', 'utf8', (err, data) => {
+  fs.readFile('db/db.json', 'utf8', (err, data) => {
     if (err) {
       return res.status(500).json({ error: 'An error occurred while reading the database.' });
     }
@@ -22,7 +22,7 @@ app.get('/api/notes', (req, res) => {
 });
 
 app.post('/api/notes', (req, res) => {
-  fs.readFile('db.json', 'utf8', (err, data) => {
+  fs.readFile('db/db.json', 'utf8', (err, data) => {
     if (err) {
       return res.status(500).json({ error: 'An error occurred while reading the database.' });
     }
@@ -30,7 +30,7 @@ app.post('/api/notes', (req, res) => {
     const newNote = req.body;
     newNote.id = Date.now().toString(); 
     notes.push(newNote);
-    fs.writeFile('db.json', JSON.stringify(notes), (err) => {
+    fs.writeFile('db/db.json', JSON.stringify(notes), (err) => {
       if (err) {
         return res.status(500).json({ error: 'An error occurred while writing to the database.' });
       }
